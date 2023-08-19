@@ -1,20 +1,18 @@
 # loan-offer-service
 
-## Настройка БД
-
-1. **Создать БД**
+## **Создать БД**
 
 ```
 create database loan_offer;
 ```
 
-2. **Создать схему в БД loan_offer**
+## **Создать схему в БД loan_offer**
 
 ```
    create schema data;
 ```
 
-3. **Настроить файл пропертей**
+## **Настроить файл пропертей**
 
 **application.yml** предоставляется вместе с jar файлом.
 Для работы сервиса необходимо настроит:
@@ -22,9 +20,15 @@ create database loan_offer;
 1. Доступ к PostgreSQL.
 
 
-4. **Собрать проект с помощью Maven**
+## **Собрать проект с помощью Maven**
 
-5. **Запустить сервис**
+## **Запустить сервис**
+
+Можно запустить в intellij IDEA
+
+![img.png](img.png)
+
+# ИЛИ
 
 Версия java
 
@@ -43,7 +47,7 @@ OpenJDK 64-Bit Server VM (build 20.0.1+10, mixed mode, sharing)
 java -jar loan-offer-service-0.0.1-SNAPSHOT.jar --spring.config.location=/service/src/main/resources/application.yml 
 ```
 
-5. **Открыть приложение в браузере**
+## **Открыть приложение в браузере**
    Перейти по ссылке в браузере:
 
 ```
