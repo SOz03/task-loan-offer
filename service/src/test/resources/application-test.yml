@@ -1,0 +1,39 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+#      url: jdbc:h2:mem:data;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:data
+  jpa:
+    database: h2
+    show-sql: true
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: false
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
+        generate_statistics: false
+        temp:
+          use_jdbc_metadata_defaults: false
+    open-in-view: false
+  flyway:
+    enabled: false
+  application:
+    name: loan-offer-service
+  main:
+    allow-circular-references: true
+
+loan-offer-service:
+  security:
+    token-lifetime: 86_400_000
+    secret-key: FL7V21ZO36006FYE1

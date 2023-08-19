@@ -1,0 +1,52 @@
+<div class="container" *ngIf="currentUser; else loggedOut">
+  <h3 class="text-center">
+    <a>Профиль - <strong style="color: #0074D9">{{ currentUser.username }}</strong></a>
+  </h3>
+  <div class="card-group">
+    <div class="col">
+      <table class="table table-bordered table-light shadow w-50">
+        <thead>
+        <tr>
+          <th scope="col" class="text-center">Параметр</th>
+          <th scope="col" class="text-center">Описание</th>
+        </tr>
+        </thead>
+        <tr>
+          <td>Токен</td>
+          <td class="small">
+            {{ currentUser.token.substring(0, currentUser.token.length / 2) }}
+            {{ currentUser.token.substring(currentUser.token.length / 2, currentUser.token.length) }}
+          </td>
+        </tr>
+        <tr>
+          <td>Почта</td>
+          <td>{{currentUser.email}}</td>
+        </tr>
+        <tr>
+          <td>Имя</td>
+          <td>{{ currentUser.fullname }}</td>
+        </tr>
+        <tr>
+          <td>Телефон</td>
+          <td>{{ currentUser.phone }}</td>
+        </tr>
+        <tr>
+          <td>Город</td>
+          <td>{{ currentUser.city }}</td>
+        </tr>
+        <tr>
+          <td>Роль</td>
+          <td><p class="text-primary text-center"><strong>{{ currentUser.role }}</strong></p></td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-4">
+      <img id="profile-img" style="width: 280px; height: 280px;"
+           src="https://img.freepik.com/premium-vector/male-avatar-character-isolated-icon_24877-23105.jpg"
+           class="profile-img-card" alt=""/>
+    </div>
+  </div>
+</div>
+<ng-template #loggedOut>
+  Войдите в систему.
+</ng-template>

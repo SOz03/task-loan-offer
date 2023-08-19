@@ -1,0 +1,14 @@
+.label {
+  width: 15%;
+  color: black;
+  font-size: 20px;
+}
+
+.content__close {
+  width: 11px;
+  height: 26px;
+  right: 20px;
+  top: 14px;
+  z-index: 1;
+  cursor: pointer;
+}

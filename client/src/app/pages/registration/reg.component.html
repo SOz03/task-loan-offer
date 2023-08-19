@@ -1,0 +1,111 @@
+<div class="h1 mb-4">
+</div>
+
+<div class="alert alert-success mb-4" *ngIf="isSuccessful">
+  Регистрация прошла успешно!
+</div>
+
+<div class="mb-4 shadow">
+  <div class="card card-container card-body border-start border-dark border-2" style="alignment: center">
+    <div class="text-center">
+      <label class="h2" style="text-align:center;vertical-align: middle;min-width: 220px">Регистрация нового
+        пользователя</label>
+    </div>
+    <form name="form" (ngSubmit)="onSubmit($event)" [formGroup]="form" novalidate autocomplete="off">
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Имя пользователя<span
+            class="text-danger">*</span></label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="text" class="form-control" name="username"
+                 formControlName="username"
+                 required minlength="5"
+                 maxlength="20"/>
+          <div class="alert-danger" *ngIf="form.get('username')?.dirty && form.get('username')?.invalid">
+            <div class="text-danger" *ngIf="form.get('username')?.errors?.['required']">Обязательно для заполнения</div>
+            <div class="text-danger" *ngIf="form.get('login')?.errors?.['minlength']">
+              Минимальная длина 5 символов
+            </div>
+            <div class="text-danger" *ngIf="form.get('username')?.errors?.['maxlength']">
+              Максимальная длина 20 символов
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Почта<span
+            class="text-danger">*</span></label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="email" class="form-control" name="email"
+                 formControlName="email" required email/>
+          <div class="alert-danger" *ngIf="form.get('email')?.dirty && form.get('email')?.invalid">
+            <div class="text-danger" *ngIf="form.get('email')?.errors?.['required']">"Почта обязательна для
+              заполнения"
+            </div>
+            <div class="text-danger" *ngIf="form.get('email')?.errors?.['email']">Почта должна быть действительным
+              адресом
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Пароль<span
+            class="text-danger">*</span></label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="password" class="form-control" name="password"
+                 formControlName="password"
+                 required minlength="6"/>
+          <div class="alert-danger" *ngIf="form.get('password')?.dirty && form.get('password')?.invalid">
+            <div class="text-danger" *ngIf="form.get('password')?.errors?.['required']">Пароль обязателен для
+              заполнения
+            </div>
+            <div class="text-danger" *ngIf="form.get('password')?.errors?.['minlength']">Пароль должен состоять не менее
+              чем из 6 символов
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">ФИО</label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="fullname" class="form-control" name="fullname"
+                 formControlName="fullname"/>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Номер телефона</label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="phone" class="form-control" name="phone"
+                 formControlName="phone"/>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Город</label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="city" class="form-control" name="city"
+                 formControlName="city"/>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-dark" style="width: 600px">
+          <span class="h3">Зарегистрироваться</span>
+        </button>
+      </div>
+      <div class="alert alert-warning" *ngIf="isSignUpFailed">
+        Ошибка при регистрации!<br/>{{ errorMessage }}
+      </div>
+    </form>
+  </div>
+</div>

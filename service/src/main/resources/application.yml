@@ -1,0 +1,55 @@
+server:
+  port: 8080
+  ssl:
+    enabled: false
+
+spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    out-of-order: true
+    locations: classpath:/db/migration
+    baseline-version: 0
+    table: tr_flyway_schema_history
+    schemas:
+      - data
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/loan_offer?ApplicationName=loan-offer-service&currentSchema=data&useSSL=false
+  jpa:
+    database: postgresql
+    show-sql: false
+    generate-ddl: false
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        show_sql: false
+        jdbc:
+          batch_size: 1000
+        order_inserts: true
+        generate_statistics: false
+        temp:
+          use_jdbc_metadata_defaults: false
+    open-in-view: false
+  application:
+    name: loan-offer-service
+  main:
+    allow-circular-references: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    disable-swagger-default-url: true
+  show-actuator: true
+
+loan-offer-service:
+  security:
+    token-lifetime: 86_400_000
+    secret-key: FL7V21ZO36006FYE1

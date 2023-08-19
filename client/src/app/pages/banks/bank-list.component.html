@@ -1,0 +1,202 @@
+<body>
+<p></p>
+<p></p>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <button (click)="clickTag(1)" class="nav-link {{tabInfo}}" id="nav-info-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-info" aria-selected="true">Информация
+      о банках
+    </button>
+    <button (click)="clickTag(2)" *ngIf="hasEditAccess" class="nav-link {{tabSave}}" id="nav-save-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-save" aria-selected="false">
+      Изменения
+    </button>
+  </div>
+</nav>
+<hr>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane {{tabInfo}}" id="nav-info" role="tab panel" aria-labelledby="nav-info-tab" tabindex="0">
+    <div class="text-center">
+      <label class="h1 text-primary">
+        Информация о банках
+      </label>
+    </div>
+    <div class="card my-5">
+      <div class="card-body">
+        <table class="table table-striped border border-dark">
+          <thead class="thead-dark">
+          <tr class="table-header text-center">
+            <!--            <th scope="col" class="border border-dark">#</th>-->
+            <th style="vertical-align: middle" scope="col">
+              <div class="">
+                <label class="col-auto">Название</label>
+                <input class="input-group-text w-100" [(ngModel)]="searchText" (input)="search(searchText)"
+                       type="search"
+                       placeholder="поиск">
+              </div>
+            </th>
+            <th scope="col" style="vertical-align: middle">Список кредитов доступных в банке</th>
+            <th *ngIf="hasEditAccess" scope="col" style="vertical-align: middle">Клиенты оформленные в банке</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="text-center {{(bank.show ? '' : 'd-none')}}" *ngFor="let bank of banks">
+            <!--            <td class="border border-dark">{{ bank.id }}</td>-->
+            <td class="text-primary" style="vertical-align: middle">
+              <div class="row" style="vertical-align: middle">
+                <span class="badge col-auto" *ngIf="!hasEditAccess && stateUserInBank(bank.id)">✔</span>
+                <label class="col-auto">{{ bank.bankName }}</label>
+              </div>
+            </td>
+            <td class="align-content-center ">
+              <div class="row">
+                <span class="badge bg-secondary col-auto m-md-2">count: {{bank.credits.length}}</span>
+                <select class="form-select form-select-sm col-auto w-75" aria-label="Доступные кредиты">
+                  <option selected *ngFor="let credit of bank.credits">
+                    <p>
+                      лимит: {{credit.limitation}}₽;
+                    </p>
+                    <p>
+                      процент: {{credit.rate}}%;
+                    </p>
+                    <p>
+                      срок: {{credit.deadline}} мес.;
+                    </p>
+                  </option>
+                </select>
+              </div>
+            </td>
+            <td *ngIf="hasEditAccess">
+              <div class="row">
+                <span class="badge bg-secondary col-auto m-md-2">count: {{bank.users.length}}</span>
+                <select class="form-select form-select-sm col-auto w-75">
+                  <option selected *ngFor="let user of bank.users">
+                    <p>
+                      {{user.fullname}}
+                    </p>
+                  </option>
+                </select>
+              </div>
+            </td>
+            <td *ngIf="hasEditAccess">
+              <button *ngIf="hasEditAccess" class="btn btn-danger" (click)="delete(bank)">
+                <img id="profile-img-delete" style="width: 20px; height: 20px;"
+                     src="assets/images/icon-form-delete.png"
+                     class="profile-img-card" alt=""/>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="contentIsEmpty" class="w-100 text-center">
+        <label class="h3" style="min-width: 300px">Записи не найдены</label>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane {{tabSave}}" id="nav-save" role="tabpanel" aria-labelledby="nav-save-tab" tabindex="0">
+    <div>
+      <form class="row gx-3 gy-lg-5">
+        <div class="form-check row-1 col-2" style="min-width: 500px">
+          <input class="form-check-input" type="radio" name="radio" id="r1" (click)="setUpdate(true)">
+          <label class="form-check-label h5 text-success" for="r1">
+            Изменить запись
+          </label>
+        </div>
+        <div class="form-check row-1 col-7">
+          <input class="form-check-input" type="radio" name="radio" id="r2" (click)="setUpdate(false)" checked>
+          <label class="form-check-label h5 text-primary" for="r2">
+            Добавить новую запись
+          </label>
+        </div>
+      </form>
+      <hr>
+      <div *ngIf="hasEditAccess" class="container">
+        <div class="form-control">
+          <div class="header text-center">
+            <label *ngIf="isUpdate" class="h2 text-success">Изменение записи</label>
+            <label *ngIf="isCreate" class="h2 text-primary">Создание новой записи</label>
+          </div>
+          <div *ngIf="isUpdate" class="row g-0 align-items-center">
+            <div class="col-auto" style="min-width: 200px">
+              <label class="col-form-label  m-md-2 h5">Обновляемый банк<span class="text-danger">*</span></label>
+            </div>
+            <form class="form row g-0" style="width: 400px" [formGroup]="banksForm" (ngSubmit)="selectBank()">
+              <select formControlName="bank" class="form-select form-select-sm m-md-2 border-success"
+                      style="height: 35px">
+                <option [ngValue]="null" disabled>пусто</option>
+                <option [ngValue]="bank" selected *ngFor="let bank of banks">
+                  {{bank.bankName}}
+                </option>
+              </select>
+              <button class="btn btn-success m-md-2" type="submit" style="height: 35px">
+                Выбрать
+              </button>
+            </form>
+            <div class="row" *ngIf="changeBank?.id">
+              <div style="width: 600px; horiz-align: left">
+                <label class="text-dark fw-bolder" style="height: 35px;width: 600px">
+                  Выбрана запись с <span class="text-success">ID: {{ changeBank?.id }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <p></p>
+          <div class="card-body ">
+            <div class="row g-0 align-items-center">
+              <div class="col-auto" style="min-width: 200px">
+                <label class="col-form-label m-md-2">Название банка</label>
+              </div>
+              <div class="col-auto">
+                <input [(ngModel)]="changeBank.bankName"
+                       [value]="changeBank.bankName" type="input" class="form-control m-md-2" style="height: 35px;width: 400px">
+              </div>
+            </div>
+            <div class="form collapse-horizontal row">
+              <div class="col-1" style="min-width: 213px">
+                <label class="col-form-label m-md-2">Доступные кредиты</label>
+              </div>
+              <form class="form" style="width: 600px" [formGroup]="creditsForm" (ngSubmit)="selectCredit()">
+                <div class="selector row" style="width: 700px">
+                  <select formControlName="credits"
+                          class="form-select form-select-sm m-md-2" style="height: 35px;width: 400px">
+                    <option [ngValue]="null" disabled>пусто</option>
+                    <option selected *ngFor="let credit of allCredits" [ngValue]="credit">
+                      лимит: {{credit.limitation}}
+                      процент: {{credit.rate}}
+                      срок: {{credit.deadline}}
+                    </option>
+                  </select>
+                  <button class="btn btn-dark m-md-2" type="submit" style="max-width: 50px; height: 35px;">
+                    ➕
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="container">
+              <div class="row">
+                <div *ngFor="let credit of changeBank.credits" style="vertical-align: center" class="col-auto m-md-2"
+                     (click)="removeCredit(credit)">
+                  <span class="btn btn-dark position-relative col-auto">
+                    лимит: {{credit.limitation}}
+                    процент: {{credit.rate}}
+                    срок: {{credit.deadline}}
+                    <span class="text-danger strong">X</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-auto">
+              <button *ngIf="isCreate" (click)="create()"
+                      class="btn btn-primary  m-md-2" style="min-width: 300px">Создать</button>
+              <button *ngIf="isUpdate" (click)="update()"
+                      class="btn btn-success  m-md-2" style="min-width: 300px">Обновить</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

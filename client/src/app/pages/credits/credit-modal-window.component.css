@@ -1,0 +1,133 @@
+.contentModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--buttonModal-background);
+    /* display: none; */
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    /* opacity: 0; */
+    transition: 0.3s;
+}
+.modalH3 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-transform: uppercase;
+    margin: 0 0 18px;
+    color: #000;
+    text-align: center;
+}
+.contentModal.block {
+    display: flex;
+}
+.contentModal.active {
+    opacity: 1;
+}
+.contentModal .contentModal__back {
+    display: table;
+    width: 100%;
+    height: 100%;
+}
+.contentModal .contentModal__back .handleBackgroundClose {
+    width: 560px;
+    padding: 30px 50px;
+    overflow: hidden;
+}
+.contentModal .contentModal__position {
+    display: table-cell;
+    padding: 0 1em;
+    vertical-align: middle;
+    text-align: center;
+}
+.contentModal .contentModal__position--aligned-top {
+    padding: 0 1em;
+    vertical-align: middle;
+    text-align: center;
+}
+.contentModal .contentModal__body {
+    position: relative;
+    max-width: 560px;
+    border-radius: 6px;
+    display: block;
+    padding: 30px 30px;
+    background: #fff;
+    box-shadow: 0px 0px 25px var(--buttonModal-shadow);
+    box-shadow: 0px 0px 25px darkslateblue;
+    color: black;
+    text-align: left;
+    margin: 0 auto;
+}
+.contentModal .contentModal__body .form-control {
+    border-radius: 4px !important;
+}
+.contentModal .contentModal__body .btn {
+    border-radius: 4px !important;
+}
+.contentModal .contentModal__body:focus {
+    outline: none;
+}
+.contentModal .contentModal__close {
+    width: 11px;
+    height: 26px;
+    position: absolute;
+    right: 20px;
+    top: 14px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+
+.contentModal__close:before {
+    content: "";
+    background-color: #343b45;
+    position: absolute;
+    z-index: 2;
+    transform: rotate(45deg);
+    width: 2px;
+    height: 15px;
+    top: 5px;
+    left: 5px;
+    border-radius: 1px;
+}
+.contentModal .contentModal__close:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 2px;
+    height: 15px;
+    transform: rotate(-45deg);
+    border-radius: 1px;
+    background: #343b45;
+}
+.contentModal .contentModal__close:hover {
+    transform: scale(1.1) rotate(0);
+}
+.inputText {
+    font-size: 15px;
+    line-height: 16px;
+    height: 35px;
+    display: block;
+    width: 100%;
+    border: none;
+    background: #b3b3b3;
+    color: #000;
+    border-radius: 5px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0),inset 0 0 0 100px #f8f8ff;
+    margin-bottom: 5px;
+    padding: 0 15px
+}
+.mb-5-px {
+    margin-bottom: 5px;
+}
+.p-0-15-px {
+    padding: 0 15px
+}
+.inputBtn {
+    width: 150px;
+    margin: 15px auto 0;
+}

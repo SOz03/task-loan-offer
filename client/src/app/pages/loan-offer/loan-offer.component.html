@@ -1,0 +1,175 @@
+<head>
+  <meta charset="utf-8">
+  <title>Кредитное предложение</title>
+</head>
+<p></p>
+<p></p>
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <button (click)="clickTag(1)" class="nav-link {{tabAll}}" id="nav-all-tab" data-bs-toggle="tab"
+            data-bs-target="#nav-home" type="button" role="tab"
+            aria-controls="nav-all" aria-selected="true">
+      <span *ngIf="hasEditAccess">Оформленные кредиты</span>
+      <span *ngIf="!hasEditAccess">Мои кредиты</span>
+    </button>
+    <button *ngIf="hasEditAccess" (click)="clickTag(2)" class="nav-link {{tabPayment}}" id="nav-payment-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-profile" type="button" role="tab"
+            aria-controls="nav-payment" aria-selected="false">Оформить новый кредит
+    </button>
+  </div>
+</nav>
+<hr>
+<div class="tab-content">
+  <div class="tab-pane {{tabAll}}" id="nav-all" role="tab panel" aria-labelledby="nav-all-tab" tabindex="0">
+    <div class="text-center">
+      <label class="h1 text-primary">
+        Оформленные кредиты
+      </label>
+    </div>
+    <div class="card my-5">
+      <div class="card-body">
+        <table class="table table-striped border border-dark">
+          <thead class="thead-dark">
+          <tr class="table-header text-center">
+            <th scope="col" style="vertical-align: middle">Банк</th>
+            <th style="vertical-align: middle" scope="col">
+              <div class="">
+                <label class="col-auto">Имя клиента</label>
+                <input *ngIf="hasEditAccess" class="input-group-text w-100" [(ngModel)]="searchText"
+                       (input)="searchUser(searchText)"
+                       type="search"
+                       placeholder="поиск">
+              </div>
+            </th>
+            <th scope="col" style="vertical-align: middle">Кредит</th>
+            <th scope="col" style="vertical-align: middle">Сумма с %</th>
+            <th *ngIf="hasEditAccess" scope="col" style="vertical-align: middle">Доступ</th>
+            <th *ngIf="!hasEditAccess" scope="col" style="vertical-align: middle">Подробно</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr style="vertical-align: middle"
+              class="text-center {{(loanOffer.show ? '' : 'd-none')}}" *ngFor="let loanOffer of loanOffers">
+            <td class="text-primary" style="vertical-align: middle">
+              <div class="row text-center" style="vertical-align: middle">
+                <label class="col-auto">{{ loanOffer.bank?.bankName}}</label>
+              </div>
+            </td>
+            <td class="align-content-center ">
+              <div class="row text-center">
+                <label>{{loanOffer.user?.fullname}}</label>
+              </div>
+            </td>
+            <td>
+              <div class="row text-center">
+                <label>лимит: {{loanOffer.credit?.limitation}}₽; процент: {{loanOffer.credit?.rate}}%;
+                  срок: {{loanOffer.credit?.deadline}} мес.;</label>
+              </div>
+            </td>
+            <td>
+              <div class="row text-center">
+                <label>{{loanOffer.loanAmount}}</label>
+              </div>
+            </td>
+            <div class="{{loanOffer?.printVal}} collapse modalWindow " xmlns="http://www.w3.org/1999/html">
+              <div class="contentModal" href="contentModal">
+                <div class="contentModal__back">
+                  <div class="contentModal__position">
+                    <div click="handleBackgroundClose">
+                      <div
+                        class="contentModal__body"
+                        role="dialog"
+                        aria-modal="true"
+                        tabindex="-1"
+                        href="dialogBody"
+                        keydown="focusTrap"
+                      >
+                        <div class="contentModal__close" (click)="printGraph(loanOffer)" v-if="!notClosable">
+                        </div>
+                        <div class="cart__modal-content container show multi-collapse" id="mt2">
+                          <div class="form" *ngFor="let payment of loanOffer.paymentSchedules">
+                            <label class="small">
+                              <span class="text-primary">Дата: </span>{{payment?.datePayment}}
+                              <span class="text-primary">Сумма: </span>{{payment?.amount}}
+                              <span class="text-primary">Основная: </span>{{payment?.body}}
+                              <span class="text-primary">Процент: </span>{{payment?.interest}}
+                              <hr>
+                            </label>
+                          </div>
+                          <label><span class="text-info">Общая сумма: </span>{{loanOffer.loanAmount}}</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <td>
+              <div class="row">
+                <div class="mb-5-px">
+                  <button style="width: 100px; height: 50px;horiz-align: center" class="btn btn-dark"
+                          (click)="printGraph(loanOffer)" data-bs-toggle="collapse"
+                          data-bs-target="#mt2" aria-expanded="false"
+                          aria-controls="mt2">
+                    График
+                  </button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="mb-5-px">
+                  <button *ngIf="hasEditAccess" class="btn btn-danger" (click)="delete(loanOffer)">
+                    <img id="profile-img-delete"
+                         style="width: 20px; height: 20px;vertical-align: middle; alignment: center"
+                         src="assets/images/icon-form-delete.png"
+                         class="profile-img-card" alt=""/>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="contentIsEmpty" class="w-100 text-center">
+        <label class="h3" style="min-width: 300px">Записи не найдены</label>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="hasEditAccess" class="tab-pane {{tabPayment}}" id="nav-payment" role="tab panel"
+       aria-labelledby="nav-payment-tab" tabindex="0">
+    <div class="text-center">
+      <label class="h1 text-primary">
+        Кредитное предложение для клиента
+      </label>
+    </div>
+    <div class="form-control">
+      <form class="form row" style="width: 500px;" [formGroup]="loanOfferForm" (ngSubmit)="create()">
+        <select (change)="setCurrentBank($event)" formControlName="bank" class="form-select form-select-sm m-md-2 border-success"
+                style="height: 35px;">
+          <option [ngValue]="null" disabled>пусто</option>
+          <option [ngValue]="bank" selected *ngFor="let bank of banks">
+            {{bank.bankName}}
+          </option>
+        </select>
+        <select formControlName="credit" class="form-select form-select-sm m-md-2 border-success"
+                style="height: 35px">
+          <option [ngValue]="null" disabled>пусто</option>
+          <option [ngValue]="credit" selected *ngFor="let credit of currentBank?.credits">
+            <span>{{credit.limitation}} - {{credit.rate}} - {{credit.deadline}}</span>
+          </option>
+        </select>
+        <select formControlName="user" class="form-select form-select-sm m-md-2 border-success"
+                style="height: 35px">
+          <option [ngValue]="null" disabled>пусто</option>
+          <option [ngValue]="user" selected *ngFor="let user of users">
+            {{user.fullname}}
+          </option>
+        </select>
+        <button class="btn btn-success m-md-2" type="submit" style="height: 35px">
+          Создать
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

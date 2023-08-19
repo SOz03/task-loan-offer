@@ -1,0 +1,64 @@
+<head>
+  <meta charset="utf-8">
+  <title>credits</title>
+</head>
+<div class="container-fluid col-md-8 w-100 mx-auto align-content-md-center">
+  <div class="form-control-sm ">
+    <input [(ngModel)]="searchText" (input)="search(searchText)" type="search" class="form-control" placeholder="поиск"
+           style="margin: 12px; width: 70%; ">
+  </div>
+  <div *ngIf="showInfo" class="toast align-items-center text-white bg-primary border-0" role="alert"
+       aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{messageInfo}}
+      </div>
+      <div class="content__close" (click)="closeInfo()" v-if="!notClosable">x</div>
+    </div>
+  </div>
+  <table class="table table-striped w-75 border-2">
+    <thead class="thead-light">
+    <tr class="text-center align-middle">
+      <th>Лимит по кредиту, ₽</th>
+      <th>Процентная ставка, %</th>
+      <th>Максимальный срок, мес</th>
+      <th>
+        <div *ngIf="hasEditAccess" class="btn" data-bs-toggle="modal"
+             style="vertical-align: central"
+             data-bs-target="#exampleModal" data-bs-whatever="@mdo" (click)="addCredit()">
+          Всего: <strong>{{contentSize}}</strong><br>
+          <img style="width: 40px; height: 40px;"
+               src="assets/images/icon-form-add.png"
+               class="profile-img-card" alt=""/>
+        </div>
+      </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="text-center {{(credit.show ? '' : 'd-none')}}" *ngFor="let credit of credits">
+      <td>{{credit.limitation}}</td>
+      <td>{{credit.rate}}</td>
+      <td>{{credit.deadline}}</td>
+      <td>
+        <div *ngIf="hasEditAccess" class="btn btn-warning" style="margin-right: 5px;" (click)="edit(credit)">
+          <img id="profile-img-edit" style="width: 20px; height: 20px;"
+               src="assets/images/icon-form-edit.png"
+               class="profile-img-card" alt=""/>
+        </div>
+        <button *ngIf="hasEditAccess" class="btn btn-danger" (click)="delete(credit.id)">
+          <img id="profile-img-delete" style="width: 20px; height: 20px;"
+               src="assets/images/icon-form-delete.png"
+               class="profile-img-card" alt=""/>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div *ngIf="contentIsEmpty" class="w-75 text-md-center">
+    <label class="text-center" style="min-width: 300px">Записи не найдены</label>
+  </div>
+</div>
+<ng-template appRef></ng-template>
+
+
+
